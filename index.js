@@ -3,6 +3,7 @@ const express=require('express');
 require('./db/config');
 const cors=require('cors');
 const User=require('./db/user');
+const Product = require('./db/Product');
 
 const app=express();
 app.use(cors());
@@ -28,5 +29,13 @@ app.post("/login",async (req,res)=>{
         res.send({result:"No user found."});
     }
 })
+
+
+app.post("/addproduct",async (req,res)=>{
+    let product=new Product(req.body);
+    let result=await product.save(); 
+    res.send(result);
+})
+
 
 app.listen(5000);   
