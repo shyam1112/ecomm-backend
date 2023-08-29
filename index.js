@@ -3,7 +3,7 @@ const express=require('express');
 require('./db/config');
 const cors=require('cors');
 const User=require('./db/user');
-const Product = require('./db/Product');
+const Product = require('./db/product');
 
 const app=express();
 app.use(cors());
