@@ -26,8 +26,6 @@ app.post('/order', async (req, res) => {
     try {
       const { formData, orderData } = req.body; // Get both form data and order data from the request body
   
-      console.log('Received formData:', formData);
-    console.log('Received orderData:', orderData);
       // Create a new order using the Mongoose model
       const newOrder = new Order({
         userId: formData.userId,
@@ -38,7 +36,6 @@ app.post('/order', async (req, res) => {
         address: formData.address,
         paymentMethod: formData.paymentMethod,
       });
-  
       // Save the new order to the database
       const savedOrder = await newOrder.save();
   
@@ -49,7 +46,17 @@ app.post('/order', async (req, res) => {
     }
   });
   
-  
+  app.get("/order",async (req,res)=>{
+    let order= await Order.find();
+    if(order.length>0){
+        res.send(order);
+    }else{
+        res.send({result:"No products found."});
+    }
+});
+
+
+
 app.post("/login",async (req,res)=>{
     if(req.body.email && req.body.pass){
         let user=await User.findOne(req.body).select("-pass");
