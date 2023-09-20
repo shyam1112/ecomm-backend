@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const express=require('express');
 require('./db/config');
 const cors=require('cors');
-const User=require('../ecomm-backend/db/user');
+const User=require('./db/user');
 const Product = require('./db/product');
 const Cart=require('./db/cart');
 const Order =require('./db/order')
