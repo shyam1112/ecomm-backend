@@ -1,13 +1,18 @@
+const bodyParser = require('body-parser');
 
 const express=require('express');
 require('./db/config');
 const cors=require('cors');
 const User=require('./db/user');
 const Product = require('./db/product');
+const Cart=require('./db/cart');
+const Order =require('./db/order')
 
 const app=express();
 app.use(cors());
 app.use(express.json());
+
+app.use(bodyParser.urlencoded({extended:true,parameterLimit:100000,limit:"500mb"}));
 
 app.post("/register",async (req,res)=>{
     let user=new User(req.body);
@@ -17,6 +22,34 @@ app.post("/register",async (req,res)=>{
     res.send(result);
 })
 
+app.post('/order', async (req, res) => {
+    try {
+      const { formData, orderData } = req.body; // Get both form data and order data from the request body
+  
+      console.log('Received formData:', formData);
+    console.log('Received orderData:', orderData);
+      // Create a new order using the Mongoose model
+      const newOrder = new Order({
+        userId: formData.userId,
+        cart: orderData.cart,
+        total: orderData.total,
+        name: formData.name,
+        email: formData.email,
+        address: formData.address,
+        paymentMethod: formData.paymentMethod,
+      });
+  
+      // Save the new order to the database
+      const savedOrder = await newOrder.save();
+  
+      res.status(201).json(savedOrder); // Respond with the saved order data
+    } catch (error) {
+      console.error('Error saving order:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  
 app.post("/login",async (req,res)=>{
     if(req.body.email && req.body.pass){
         let user=await User.findOne(req.body).select("-pass");
@@ -35,7 +68,29 @@ app.post("/addproduct",async (req,res)=>{
     let product=new Product(req.body);
     let result=await product.save(); 
     res.send(result);
+    
 })
+
+app.post("/addcart",async (req,res)=>{
+    let cart=new Cart(req.body);
+    let result=await cart.save(); 
+    res.send(result);
+    
+})
+
+app.delete("/carts/:id",async (req,res)=>{
+    const result=await Cart.deleteOne({_id:req.params.id});
+    res.send(result);
+});
+
+app.get("/carts/:key",async (req,res)=>{
+    let result=await Cart.find({
+        "$or":[
+           {userId:{$regex:req.params.key}}
+        ]
+   })
+   res.send(result);
+});
 
 app.get("/products",async (req,res)=>{
     let products= await Product.find();
@@ -50,6 +105,8 @@ app.delete("/products/:id",async (req,res)=>{
     const result=await Product.deleteOne({_id:req.params.id});
     res.send(result);
 });
+
+
 
 app.get("/products/:id",async (req,res)=>{
     const result=await Product.findOne({_id:req.params.id});
