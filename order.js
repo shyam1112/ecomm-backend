@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
       company: String,
       img: String,
       size: String,
+      color1:String
     }
   ],
   total: String,
