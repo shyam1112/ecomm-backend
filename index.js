@@ -4,9 +4,9 @@ const express=require('express');
 require('./db/config');
 const cors=require('cors');
 const User=require('./user');
-const Product = require('./db/product');
-const Cart=require('./db/cart');
-const Order =require('./db/order')
+const Product = require('./product');
+const Cart=require('./cart');
+const Order =require('./order')
 
 const app=express();
 app.use(cors());
