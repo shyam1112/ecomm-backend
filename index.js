@@ -55,6 +55,10 @@ app.post('/order', async (req, res) => {
     }
 });
 
+app.delete("/order/:id",async (req,res)=>{
+    const result=await Order.deleteOne({_id:req.params.id});
+    res.send(result);
+});
 
 
 
