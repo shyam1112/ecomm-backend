@@ -15,7 +15,8 @@ const orderSchema = new mongoose.Schema({
   ],
   total: String,
   name: String,        
-  email: String,       
+  email: String,
+  number:String,       
   address: String,    
   paymentMethod: String 
 });

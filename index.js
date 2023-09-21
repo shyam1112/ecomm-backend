@@ -34,6 +34,7 @@ app.post('/order', async (req, res) => {
         name: formData.name,
         email: formData.email,
         address: formData.address,
+        number:formData.number,
         paymentMethod: formData.paymentMethod,
       });
       // Save the new order to the database
