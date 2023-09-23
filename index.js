@@ -35,14 +35,20 @@ app.post("/login",async (req,res)=>{
     }
 })
 
-app.get("/profile/:id",async (req,res)=>{
-    const result=await User.findOne({_id:req.params.id});
-    if(result){
-        res.send(result);
-    }else{
-        res.send({result:"No profile found."});
+app.get("/profile/:id", async (req, res) => {
+    try {
+        const result = await User.findOne({ _id: req.params.id });
+        if (result) {
+            res.send(result);
+        } else {
+            res.status(404).send({ result: "No profile found." });
+        }
+    } catch (error) {
+        console.error('Error fetching profile:', error);
+        res.status(500).send({ error: 'Internal Server Error' });
     }
 });
+
 
 app.post('/order', async (req, res) => {
     try {
