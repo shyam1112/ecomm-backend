@@ -34,7 +34,10 @@ app.post("/login",async (req,res)=>{
         res.send({result:"No user found."});
     }
 })
-
+app.get("/profile/:id",async (req,res)=>{
+    const result=await User.findOne({_id:req.params.id});
+    res.send(result);
+});
 
 app.post('/order', async (req, res) => {
     try {
