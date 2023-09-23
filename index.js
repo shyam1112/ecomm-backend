@@ -35,9 +35,9 @@ app.post("/login",async (req,res)=>{
     }
 })
 
-app.get("/profile", async (req, res) => {
+app.get("/profile/:id", async (req, res) => {
     try {
-        const result = await User.find();
+        const result = await User.find({_id:req.params.id});
         if (result) {
             res.send(result);
         } else {
