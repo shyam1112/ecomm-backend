@@ -64,20 +64,14 @@ app.post('/order', async (req, res) => {
     }
   });
   
-  app.get("/profile/:id", async (req, res) => {
-    try {
-      const result = await User.findOne({ _id: req.params.id });
-  
-      if (!result) {
-        return res.status(404).json({ error: "User not found" });
-      }
-  
-      res.json(result);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
+  app.get("/order",async (req,res)=>{
+    let order= await Order.find();
+    if(order.length>0){
+        res.send(order);
+    }else{
+        res.send({result:"No products found."});
     }
-  });
+});
 
 app.delete("/order/:id",async (req,res)=>{
 
