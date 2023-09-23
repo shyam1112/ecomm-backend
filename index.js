@@ -22,6 +22,20 @@ app.post("/register",async (req,res)=>{
     res.send(result);
 })
 
+app.post("/login",async (req,res)=>{
+    if(req.body.email && req.body.pass){
+        let user=await User.findOne(req.body).select("-pass");
+        if(user){
+            res.send(user)
+        }else{
+            res.send({result:"No user found."});
+        }
+    }else{
+        res.send({result:"No user found."});
+    }
+})
+
+
 app.post('/order', async (req, res) => {
     try {
       const { formData, orderData } = req.body; // Get both form data and order data from the request body
@@ -61,20 +75,6 @@ app.delete("/order/:id",async (req,res)=>{
     res.send(result);
 });
 
-
-
-app.post("/login",async (req,res)=>{
-    if(req.body.email && req.body.pass){
-        let user=await User.findOne(req.body).select("-pass");
-        if(user){
-            res.send(user)
-        }else{
-            res.send({result:"No user found."});
-        }
-    }else{
-        res.send({result:"No user found."});
-    }
-})
 
 
 app.post("/addproduct",async (req,res)=>{
