@@ -122,7 +122,6 @@ app.get("/myorder/:userid",async (req,res)=>{
 });
 
 app.delete("/order/:id",async (req,res)=>{
-
     const result=await Order.deleteOne({_id:req.params.id});
     res.send(result);
 });
@@ -149,8 +148,22 @@ app.delete("/carts/:id",async (req,res)=>{
     res.send(result);
 });
 
+app.delete("/myorderid/:id",async (req,res)=>{
+    const result=await Myorder.deleteOne({_id:req.params.id});
+    res.send(result);
+});
+
 app.get("/carts/:key",async (req,res)=>{
     let result=await Cart.find({
+        "$or":[
+           {userId:{$regex:req.params.key}}
+        ]
+   })
+   res.send(result);
+});
+
+app.delete("/cartsdelete/:key",async (req,res)=>{
+    let result=await Cart.deleteMany({
         "$or":[
            {userId:{$regex:req.params.key}}
         ]
