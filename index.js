@@ -7,6 +7,7 @@ const User=require('./user');
 const Product = require('./product');
 const Cart=require('./cart');
 const Order =require('./order')
+const Myorder=require('./myorder');
 
 const app=express();
 app.use(cors());
@@ -74,14 +75,50 @@ app.post('/order', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-  
-  app.get("/order",async (req,res)=>{
+
+  app.post("/addmyorder",async (req,res)=>{
+    try {
+        const { formData, orderData } = req.body; // Get both form data and order data from the request body
+    
+        // Create a new order using the Mongoose model
+        const newOrder = new Myorder({
+          userId: formData.userId,
+          cart: orderData.cart,
+          total: orderData.total,
+          name: formData.name,
+          email: formData.email,
+          address: formData.address,
+          number:formData.number,
+          paymentMethod: formData.paymentMethod,
+        });
+        // Save the new order to the database
+        const savedOrder = await newOrder.save();
+    
+        res.status(201).json(savedOrder); // Respond with the saved order data
+      } catch (error) {
+        console.error('Error saving order:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    
+})
+
+
+app.get("/order",async (req,res)=>{
     let order= await Order.find();
     if(order.length>0){
         res.send(order);
     }else{
         res.send({result:"No products found."});
     }
+});
+
+app.get("/myorder/:userid",async (req,res)=>{
+    let result=await Myorder.find({
+        "$or":[
+           {userId:{$regex:req.params.userid}}
+        ]
+   })
+   res.send(result);
 });
 
 app.delete("/order/:id",async (req,res)=>{
@@ -98,6 +135,7 @@ app.post("/addproduct",async (req,res)=>{
     res.send(result);
     
 })
+
 
 app.post("/addcart",async (req,res)=>{
     let cart=new Cart(req.body);

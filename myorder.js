@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose=require('mongoose');
 
-const orderSchema = new mongoose.Schema({
+const myorderSchema=new mongoose.Schema({
     userId: String,
     cart: [
     {
@@ -19,6 +19,6 @@ const orderSchema = new mongoose.Schema({
   number:String,       
   address: String,    
   paymentMethod: String 
-});
 
-module.exports = mongoose.model('orders', orderSchema);
+});
+module.exports=mongoose.model('myorder',myorderSchema);

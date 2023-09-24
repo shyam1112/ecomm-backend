@@ -7,7 +7,6 @@ const productSchema=new mongoose.Schema({
     userId:String,
     company:String,
     img:String,
-    size:String,
     color1:String,
     color2:String,
     color3:String
