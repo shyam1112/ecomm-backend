@@ -10,7 +10,7 @@ const myorderSchema=new mongoose.Schema({
       company: String,
       img: String,
       size: String,
-      color1:String
+      color1: String,
     }
   ],
   total: String,
@@ -18,7 +18,7 @@ const myorderSchema=new mongoose.Schema({
   email: String,
   number:String,       
   address: String,    
-  paymentMethod: String 
-
+  paymentMethod: String ,
+  date: String
 });
 module.exports=mongoose.model('myorder',myorderSchema);

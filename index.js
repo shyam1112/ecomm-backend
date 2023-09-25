@@ -90,6 +90,7 @@ app.post('/order', async (req, res) => {
           address: formData.address,
           number:formData.number,
           paymentMethod: formData.paymentMethod,
+          date: formData.date
         });
         // Save the new order to the database
         const savedOrder = await newOrder.save();
